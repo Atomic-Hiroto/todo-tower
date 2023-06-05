@@ -1,7 +1,22 @@
 const {userModel} = require("../models/userModel")
-const {hashSync} = require("bcryptjs")
+const {hashSync,compareSync} = require("bcryptjs")
+const jwt = require("jsonwebtoken")
 
 
+async function fetchUser(regDetails){
+    let user = await userModel.findOne({username:regDetails.username})
+    if(!user){
+        throw new Error("username not found")
+    }
+    if(!compareSync(regDetails.password,user.password)){
+        throw new Error("wrong password entered")
+    }
+    user = await user.toJSON()
+    delete user.password
+    delete user.taskStack
+    let token = jwt.sign(user,process.env.JWT_SECRET)
+    return {user,token}
+}
 
 
 async function registerUser(regDetails){
@@ -27,5 +42,6 @@ async function registerUser(regDetails){
 
 
 module.exports = {
-    registerUser
+    registerUser,
+    fetchUser
 }

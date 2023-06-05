@@ -1,13 +1,39 @@
 const express = require("express")
-const { registerUser } = require("../controllers/authControllers")
+const { registerUser, fetchUser } = require("../controllers/authControllers")
 
 const loginRoute = express.Router()
 
-loginRoute.post("/",(req,res)=>{
-    res.send("Here at login")
+loginRoute.post("/",async (req,res)=>{
+    try {
+        let regDetails = req.body
+        let data = await fetchUser(regDetails)
+        res.send(data)
+    } catch (error) {
+        console.log(error)
+        switch (error.message) {
+            case "username not found":
+                res.status(400).send("User not registered")
+                break;
+            case "wrong password entered":
+                res.status(400).send("Wrong Password")    
+                break;
+            default:
+                res.status(500).send("Something went wrong")   
+                break;
+        }
+    }
 })
 
-loginRoute.post("/register",async (req,res)=>{
+loginRoute.post("/loggedIn",(req,res)=>{
+    try {
+        let token = req.body.token
+    } catch (error) {
+        console.log(error)
+        res.status(500).send("Something went wrong")   
+    }
+})
+
+loginRoute.post("/newuser",async (req,res)=>{
     try {
         let regDetails = req.body
         let result = await registerUser(regDetails)
