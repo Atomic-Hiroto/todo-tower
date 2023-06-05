@@ -27,6 +27,7 @@ loginRoute.post("/",async (req,res)=>{
 loginRoute.post("/loggedIn",(req,res)=>{
     try {
         let token = req.body.token
+        
     } catch (error) {
         console.log(error)
         res.status(500).send("Something went wrong")   
