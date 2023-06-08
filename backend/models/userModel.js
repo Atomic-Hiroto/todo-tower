@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
           {
             name: { type: String, required: true},
             priority: { type: Number, required: true },
-            deadline: { type: Date },
+            deadline: { type: Date, default:null },
             pinned: { type: Boolean, default: false },
           },
         ],
