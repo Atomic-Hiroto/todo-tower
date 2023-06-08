@@ -1,5 +1,4 @@
 const {userModel} = require("../models/userModel")
-<<<<<<< HEAD
 const {hashSync,compareSync} = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 
@@ -18,11 +17,8 @@ async function fetchUser(regDetails){
     let token = jwt.sign(user,process.env.JWT_SECRET)
     return {user,token}
 }
-=======
-const {hashSync} = require("bcryptjs")
 
 
->>>>>>> b9c7aaa770b6a417b3dd813c2204a1a2c1780535
 
 
 async function registerUser(regDetails){
@@ -48,10 +44,6 @@ async function registerUser(regDetails){
 
 
 module.exports = {
-<<<<<<< HEAD
     registerUser,
     fetchUser
-=======
-    registerUser
->>>>>>> b9c7aaa770b6a417b3dd813c2204a1a2c1780535
 }

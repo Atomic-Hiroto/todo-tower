@@ -2,6 +2,7 @@ const express = require("express")
 const dotenv = require("dotenv")
 const { loginRoute } = require("./routes/loginRoutes")
 const { connectDb } = require("./config/database")
+const { todoRoute } = require("./routes/todoRoute")
 dotenv.config()
 
 const app = express()
@@ -14,7 +15,7 @@ app.get("/",(req,res)=>{
 app.use(express.json())
 
 app.use("/login",loginRoute)
-//app.use("/todo",todoRoute)
+app.use("/todo",todoRoute)
 
 
 

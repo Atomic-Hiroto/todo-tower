@@ -1,5 +1,6 @@
 const express = require("express")
 const { registerUser, fetchUser } = require("../controllers/authControllers")
+const { getUserFromToken } = require("../middlewares/authMiddleware")
 
 const loginRoute = express.Router()
 
@@ -24,15 +25,19 @@ loginRoute.post("/",async (req,res)=>{
     }
 })
 
-loginRoute.post("/loggedIn",(req,res)=>{
+loginRoute.post("/loggedIn",getUserFromToken,(req,res)=>{
     try {
-        let token = req.body.token
-        
+        let {loggedInUser} = req;
+        return res.send({
+            data: loggedInUser
+        })
     } catch (error) {
         console.log(error)
-        res.status(500).send("Something went wrong")   
+        return res.status(500).send({
+            message: err.message
+        });
     }
-})
+}) 
 
 loginRoute.post("/newuser",async (req,res)=>{
     try {

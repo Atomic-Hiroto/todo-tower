@@ -18,9 +18,16 @@ const userSchema = new mongoose.Schema({
         type:String
     },
     taskStack: {
-        type: Array,
-        default: []
-    }
+        type: [
+          {
+            name: { type: String, required: true},
+            priority: { type: Number, required: true },
+            deadline: { type: Date },
+            pinned: { type: Boolean, default: false },
+          },
+        ],
+        default: [],
+      }
 })
 
 const userModel = mongoose.model("User",userSchema,"users")
