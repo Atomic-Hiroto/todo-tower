@@ -30,7 +30,7 @@ loginRoute.post("/loggedIn",getUserFromToken,(req,res)=>{
         let {loggedInUser} = req;
         return res.send({
             data: loggedInUser
-        })
+        }) 
     } catch (error) {
         console.log(error)
         return res.status(500).send({

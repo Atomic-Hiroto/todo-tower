@@ -29,6 +29,55 @@ async function addNewTask(task,loggedInUser){
     }
 }
 
+async function popTask(id,loggedInUser){
+    try {
+        const user = await userModel.findById(loggedInUser._id)
+
+        // Check for duplicate task name
+        const isDuplicateName = user.taskStack.some((tasks) => tasks._id === id);
+        if (!isDuplicateName) {
+            throw new Error("Task does not exist") 
+        }
+        
+        user.taskStack = user.taskStack.filter((elem)=>{
+            return elem._id != id
+        })
+
+        await user.save()
+        const updatedTaskStack = user.taskStack;
+        
+        // Rearrange tasks
+        rearrangeTaskStack(updatedTaskStack)
+        return updatedTaskStack;
+    } catch (error) {
+        console.log(error)
+        throw new Error(error.message)
+    }
+}
+
+
+async function updateTask(task,loggedInUser){
+    try {
+        const user = await userModel.findById(loggedInUser._id)
+        console.log(task)
+        // Check for duplicate task name and update
+        const isDuplicateName = user.taskStack.some((tasks) => tasks._id === task._id);
+        if (!isDuplicateName) {
+            throw new Error("Task does not exist") 
+        }
+
+        await user.save()
+        const updatedTaskStack = user.taskStack;
+        
+        // Rearrange tasks
+        rearrangeTaskStack(updatedTaskStack)
+        return updatedTaskStack;
+    } catch (error) {
+        console.log(error)
+        throw new Error(error.message)
+    }
+}
+
 
 function rearrangeTaskStack(taskStack){
     taskStack.sort((taskA, taskB) => {
@@ -58,5 +107,7 @@ function rearrangeTaskStack(taskStack){
 
 module.exports = {
     getTaskStack,
-    addNewTask
+    addNewTask,
+    popTask,
+    updateTask
 }
